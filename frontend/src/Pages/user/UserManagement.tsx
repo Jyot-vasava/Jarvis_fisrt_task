@@ -794,7 +794,7 @@ const UserManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-xl font-semibold text-gray-900">Upload Document</h3>
+              <h3 className="text-xl font-semibold text-gray-900">Upload Your Document </h3>
               <button
                 onClick={resetUploadModal}
                 className="text-gray-400 hover:text-gray-600"
