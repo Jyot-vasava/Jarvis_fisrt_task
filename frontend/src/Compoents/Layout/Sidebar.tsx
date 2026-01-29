@@ -7,7 +7,7 @@ import {
   Shield, 
   X
 } from 'lucide-react';
-import type { Role } from '../../types';
+
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,23 +15,12 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
-  const { user, hasAnyPermission } = useAuth();
+  const { user, userPermissions } = useAuth();
 
-  const canAccessUserManagement = hasAnyPermission([
-    { moduleName: 'Users', action: 'list' },
-    { moduleName: 'Users', action: 'export' },
-    { moduleName: 'Users', action: 'create' },
-    { moduleName: 'Users', action: 'edit_any' },
-    { moduleName: 'Users', action: 'edit_self' },
-    { moduleName: 'Users', action: 'delete' }
-  ]);
-
-  const canAccessRoleManagement = hasAnyPermission([
-    { moduleName: 'Roles', action: 'list' },
-    { moduleName: 'Roles', action: 'create' },
-    { moduleName: 'Roles', action: 'edit' },
-    { moduleName: 'Roles', action: 'delete' }
-  ]);
+  // Check if user has any permission for a module
+  const hasModuleAccess = (moduleName: string): boolean => {
+    return userPermissions.some(p => p.moduleName === moduleName);
+  };
 
   const menuItems = [
     {
@@ -44,19 +33,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       path: '/users',
       icon: Users,
       label: 'User Management',
-      show: canAccessUserManagement,
+      show: hasModuleAccess('Users'),
     },
     {
       path: '/roles',
       icon: Shield,
       label: 'Role Management',
-      show: canAccessRoleManagement,
+      show: hasModuleAccess('Roles'),
     }
   ];
   
-  const userRoleName = (user?.roleId && typeof user.roleId === 'object' && 'roleName' in user.roleId) 
-    ? (user.roleId as Role).roleName 
-    : 'No Role';
+ 
 
   return (
     <>
@@ -99,12 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold truncate">{user?.userName}</p>
-                <p className="text-xs text-gray-400 truncate" title={userRoleName}>
-                  <span className="inline-flex items-center gap-1">
-                    <Shield size={12} />
-                    {userRoleName}
-                  </span>
-                </p>
+             
               </div>
             </div>
           </div>

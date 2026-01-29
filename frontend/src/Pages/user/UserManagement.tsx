@@ -116,14 +116,10 @@ const UserManagement: React.FC = () => {
   useEffect(() => {
     if (canViewUsers) {
       fetchUsers();
-    }
-  }, [canViewUsers, fetchUsers]);
-
-  useEffect(() => {
-    if (canViewUsers && (canCreateUser || canEditAny || canEditSelf )) {
       fetchRoles();
     }
-  }, [canViewUsers, canCreateUser, canEditAny, canEditSelf, fetchRoles]);
+  }, [canViewUsers, fetchUsers, fetchRoles]);
+
 
   const validateForm = (): boolean => {
     const e: Record<string, string> = {};
@@ -301,9 +297,9 @@ const UserManagement: React.FC = () => {
       setSelectedFile(null);
     } catch (error) {
       console.error('Upload failed:', error);
-      const errorMsg =  'Failed to upload file';
+      const axiosError = error as AxiosError<{ message: string }>;
+      const errorMsg = axiosError.response?.data?.message || 'failed to upload'
       setUploadError(errorMsg);
-      toast.error(errorMsg);
     } finally {
       setUploading(false);
     }
@@ -808,7 +804,7 @@ const UserManagement: React.FC = () => {
                 </div>
               )}
 
-              <div>
+              <div >
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select File
                 </label>
@@ -816,7 +812,7 @@ const UserManagement: React.FC = () => {
                   type="file"
                   onChange={handleFileSelect}
                   disabled={uploading}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 />
                 
               </div>
