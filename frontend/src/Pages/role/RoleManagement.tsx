@@ -67,7 +67,7 @@ const RoleManagement: React.FC = () => {
     try {
       const res = await rolesAPI.getAll({
         page: currentPage,
-        limit: 10,
+        limit: 5,
         search,
         status: (statusFilter as 'Active' | 'Inactive' | undefined) || undefined,
         sortBy: 'createdAt',

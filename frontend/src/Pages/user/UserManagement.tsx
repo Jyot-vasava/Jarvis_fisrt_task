@@ -299,12 +299,9 @@ const UserManagement: React.FC = () => {
       toast.success(response.data.message || 'File uploaded successfully');
       setShowUploadModal(false);
       setSelectedFile(null);
-      // Optionally refresh users list if needed
-      // fetchUsers();
     } catch (error) {
       console.error('Upload failed:', error);
-      const axiosError = error as AxiosError<{ message: string }>;
-      const errorMsg = axiosError.response?.data?.message || 'Failed to upload file';
+      const errorMsg =  'Failed to upload file';
       setUploadError(errorMsg);
       toast.error(errorMsg);
     } finally {
@@ -355,7 +352,7 @@ const UserManagement: React.FC = () => {
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ['Bytes', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   };
