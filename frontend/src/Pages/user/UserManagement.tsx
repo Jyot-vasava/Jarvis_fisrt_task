@@ -74,7 +74,7 @@ const UserManagement: React.FC = () => {
     try {
       const res = await usersAPI.getAll({
         page: currentPage,
-        limit: 5,
+        limit: 7,
         search,
         status: statusFilter === "Active" || statusFilter === "Inactive" ? statusFilter as "Active" | "Inactive" : undefined,
         roleId: roleFilter || undefined,
